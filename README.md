@@ -37,8 +37,8 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
 
 #### 2. Explore Platform Engineering Perspective Overview
 1. Review the Data Plane Management section showing data plane status and regional distribution.
-1. Examine the pre-configured environments (Development, Production) with their specific runtime characteristics.
-1. Inspect the operational metrics dashboard showing resource utilization, deployment frequency, and system health.
+1. Examine the pre-configured environments (Development, Production) on the Cloud Data Plane.
+1. Inspect the user management dashboard displaying users, groups, and roles.
 1. Verify the CD pipeline configurations that define the promotion paths between environments.
 1. Review network controls for managing ingress/egress traffic and security boundaries.
 
@@ -93,10 +93,11 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
 
 #### 8. Configure Network Policies for Egress Control
 1. Navigate to `Governance → Egress Control`.
+1. Click `+Create` to configure Egress policies at organizational level.
 1. Select `Deny All` as the Egress Control Type.
 1. Add an allow rule with:
-  1. Rule Name: `Allow Open AI`
-  1. Rule: `api.openai.com`
+    1. Rule Name: `Allow Open AI`
+    1. Rule: `api.openai.com`
 1. Click `Add Rule` and verify the rule appears in the policy list.
 
 ## Part 2: Developer's Perspective
