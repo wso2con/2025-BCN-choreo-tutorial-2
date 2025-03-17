@@ -143,6 +143,8 @@ Choreo project allows you to group related components together. It also creates 
     1. Project description: `Personal Expense Tracking Application`
     1. Select `Authorize with Github`
     1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
+      1. //TODO: Add a screenshot of the github flow
+    1. Select correct Organization, Repository and Branch
     1. Select project directory as `expense-tracker`
     1. Click `Create`
 
@@ -152,7 +154,7 @@ Choreo project allows you to group related components together. It also creates 
 At this step we will create the dependent components for our application. Tipically in an organization when building a new application you would consume existing APIs and databases. For this tutorial we will create the components that we will use in our application.
 
 1. Create Accounts API
-    1. Go in to `Choreo-Tutorial-2` project
+    1. Go in to `Expense Tracker` project
     1. Select `Create Component`
     1. Select `Service Type`
     1. Select `Authorize with Github`
@@ -168,10 +170,13 @@ At this step we will create the dependent components for our application. Tipica
         1. Base Path as `/`
         1. Click Edit under Schema Path and select `accounts/openapi.yaml`
     1. Click Create
+
+1. Build and Deploy 
+
 1. Test Accounts API
 
 1. Create Receipts API
-    1. Go in to `Choreo-Tutorial-2` project
+    1. Go in to `Expense Tracker` project
     1. Select `Create Component`
     1. Select `Service Type`
     1. Select `Authorize with Github`
@@ -187,6 +192,8 @@ At this step we will create the dependent components for our application. Tipica
         1. Base Path as `/`
         1. Click Edit under Schema Path and select `accounts/openapi.yaml`
     1. Click Create
+
+1. Build and Deploy Receipts API
 
 1. Test Receipts API
     1.  
@@ -196,4 +203,44 @@ At this step we will create the dependent components for our application. Tipica
         -H "Content-Type: application/json" \
         -d '{"name": "John Doe", "email": "john.doe@example.com"}'
         ```
+
+### 3. Create the BFF API
+
+1. Create a new component
+    1. Go in to `Expense Tracker` project
+    1. Select `Create Component`
+    1. Select `Service Type`
+    1. Select `Authorize with Github`
+    1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
+    1. Select project directory as `expense-tracker`
+    1. Click `Create`
+
+
+2. Connect to the dependent components
+
+3. Testing locally 
+
+4. Debugging locally 
+
+5. Push changes to the repository
+
+### 4. Create the web application
+
+1. Create a new component
+    1. Go in to `Expense Tracker` project
+    1. Select `Create Component`
+    1. Select `Web Application`
+    1. Select `Authorize with Github`
+    1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
+    1. Select project directory as `expense-tracker`
+    1. Click `Create`
+
+### 5. Securing the application
+
+
+### 6. Testing the application
+
+
+### 7. Architecture Diagram
+
 
