@@ -19,11 +19,12 @@ Platform Engineers implement monitoring, alerting, and observability to ensure a
 Summary of achievements, benefits realized, and exploration of advanced capabilities for future implementation.
 
 ---
+## Prerequisites
+1. Fork the [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository
 
-## Detailed Lab Instructions
 
 <details>
-<summary><h3>Part 1: Platform Engineer's Perspective</h3></summary>
+<summary><h2>Part 1: Platform Engineer's Perspective</h2></summary>
 
 #### 1. Sign Up to Choreo
 - Navigate to the [Choreo console](https://console.choreo.dev/) and sign up using GitHub, Google, Microsoft, or email options.
@@ -104,67 +105,88 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 </details>
 
 <details>
-<summary><h3>Part 2: Developer's Perspective</h3></summary>
+<summary><h2>Part 2: Developer's Perspective</h2></summary>
 
-#### 1. Access and Orientation
-- Accept the project invitation email from Choreo and complete account setup.
-- Install the Choreo CLI with: `npm install -g @choreo/cli` or `brew install choreo-cli`.
-- Log into Choreo from CLI: `choreo login`.
-- Explore the environments (Development, Staging, Production) from the Developer Console.
-- Review the pipeline configuration and understand the promotion workflow.
+Lets develop an application with Choreo. For this tutorial, we will develop a simple webapplication to manage users accounts. Using this web application, user will be able to record their expences by either uploading a receipt image or by entering the expence details manually.
 
-#### 2. Application Development
-- Clone the sample repository: `git clone https://github.com/choreo-samples/customer-portal.git`.
-- Set up local environment with Node.js v14+ and npm v6+.
-- Configure database connection in the application using provided credentials:
-  ```javascript
-  const db = {
-    host: 'customer-portal-db.postgres.database.azure.com',
-    port: 5432,
-    database: 'postgres',
-    user: 'postgres',
-    password: process.env.DB_PASSWORD
-  };
-```
+#### User Interface
 
-#### 3. Deployment and Testing
-- Push code changes to trigger the CI/CD pipeline through the feature branch workflow and pull requests.
-- Monitor build process, review logs and test results, and address any failures.
-- Verify application functionality in the staging environment through comprehensive testing.
 
-#### 4. Iterative Development
-- Make code improvements based on testing feedback to fix bugs and optimize performance.
-- Focus on code development without infrastructure concerns, leveraging the pre-configured pipelines.
-- Rapidly implement and refine features to improve the overall user experience.
+#### Architecture
 
-</details>
+The application follows a microservices architecture with the following components:
 
-<details>
-<summary><h3>Part 3: Operational Excellence</h3></summary>
+![Application Architecture](./docs/images/architecture.png)
 
-#### 1. Monitoring and Observability
-- Navigate to the Observability section and set up monitoring for application health, resource utilization, and business metrics.
-- Configure comprehensive dashboards to track key performance indicators across all environments.
+1. **Web Application (Webapp)**: React-based frontend application that provides the user interface for expense management.
 
-#### 2. Alert Configuration
-- Create alerts for pipeline issues, resource threshold breaches, and application-specific problems.
-- Configure appropriate notification channels (email, Slack, SMS) based on issue severity.
+2. **API Gateway (API GW)**: Entry point for all client-side requests that handles routing and authentication.
 
-#### 3. Continuous Improvement
-- Analyze metrics and logs to identify bottlenecks, inefficiencies, and potential issues.
-- Refine environment configurations and optimize pipeline steps for better performance.
+3. **Backend for Frontend (BFF)**: Orchestration layer that optimizes and aggregates backend service calls for the frontend.
 
-</details>
+4. **Accounts Service**: Core service responsible for managing user accounts and expense records.
 
-<details>
-<summary><h3>Part 4: Recap and Path Forward</h3></summary>
+5. **Receipt Service**: Specialized service that processes receipt images and extracts data using OpenAI integration.
 
-#### 1. Review of Achievements
-- Demonstrate the completed application highlighting key features and performance metrics.
-- Analyze benefits including faster development cycles, improved code quality, and operational reliability.
-- Discuss how separation of concerns between platform engineering and development improved productivity.
+6. **Egress Gateway**: Security control point that manages and secures all outbound traffic to external services.
 
-#### 2. Advanced Capabilities
-- Explore advanced deployment strategies, security configurations, integration capabilities, and enhanced observability tools for future implementation.
+All components are deployed and managed through Choreo, ensuring secure communication and monitoring.
 
-</details>
+
+### 1. Setup
+
+1. Install the Choreo CLI
+1. Create a new project
+    1. Project name: `Choreo-Tutorial-2`
+    1. Project description: `Choreo Tutorial 2`
+
+
+### 2. Creating dependent components
+
+At this step we will create the dependent components for our application. Tipically in an organization when building a new application you would consume existing APIs and databases. For this tutorial we will create the components that we will use in our application.
+
+1. Create Accounts API
+    1. Go in to `Choreo-Tutorial-2` project
+    1. Select `Create Component`
+    1. Select `Service Type`
+    1. Select `Authorize with Github`
+    1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
+    1. Refresh the repository list and select the `2025-BCN-choreo-tutorial-2` repository.
+    1. Select `main` branch
+    1. Click Edit in Component Directory and select `accounts`
+    1. Select `go` as the build pack type
+    1. Select language version as `1.x`
+    1. Endpoint details configuration
+        1. Enter port as `8080`
+        1. API Type as `REST` 
+        1. Base Path as `/`
+        1. Click Edit under Schema Path and select `accounts/openapi.yaml`
+    1. Click Create
+1. Test Accounts API
+
+1. Create Receipts API
+    1. Go in to `Choreo-Tutorial-2` project
+    1. Select `Create Component`
+    1. Select `Service Type`
+    1. Select `Authorize with Github`
+    1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
+    1. Refresh the repository list and select the `2025-BCN-choreo-tutorial-2` repository.
+    1. Select `main` branch
+    1. Click Edit in Component Directory and select `accounts`
+    1. Select `go` as the build pack type
+    1. Select language version as `1.x`
+    1. Endpoint details configuration
+        1. Enter port as `8080`
+        1. API Type as `REST` 
+        1. Base Path as `/`
+        1. Click Edit under Schema Path and select `accounts/openapi.yaml`
+    1. Click Create
+
+1. Test Receipts API
+    1.  
+    1. Use the following curl command to test the API replace the `{account_id}` with the account id you created in the previous step
+        ```
+        curl -X POST http://receipts.staging.choreoapis.dev/receipts \
+        -H "Content-Type: application/json" \
+        -d '{"name": "John Doe", "email": "john.doe@example.com"}'
+        ```
