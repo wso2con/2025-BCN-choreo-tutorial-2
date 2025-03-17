@@ -26,80 +26,100 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 ## Part 1: Platform Engineer's Perspective
 
 #### 1. Sign Up to Choreo
-- Navigate to the [Choreo console](https://console.choreo.dev/) and sign up using GitHub, Google, Microsoft, or email options.
-- Complete the organization creation process by verifying the emails and OTP received.
-- Select the "Platform Engineer (PE)" perspective from the Choreo Console.
+1. Navigate to the [Choreo console](https://console.choreo.dev/) and sign up using GitHub, Google, Microsoft, or email options.
+1. Complete the organization creation process by verifying the emails and OTP received.
+1. Select the "Platform Engineer (PE)" perspective from the Choreo Console.
 
 #### 2. Explore Platform Engineering Perspective Overview
-- Review the Data Plane Management section showing data plane status and regional distribution.
-- Examine the pre-configured environments (Development, Production) with their specific runtime characteristics.
-- Inspect the operational metrics dashboard showing resource utilization, deployment frequency, and system health.
-- Verify the CD pipeline configurations that define the promotion paths between environments.
-- Review network controls for managing ingress/egress traffic and security boundaries.
+1. Review the Data Plane Management section showing data plane status and regional distribution.
+1. Examine the pre-configured environments (Development, Production) with their specific runtime characteristics.
+1. Inspect the operational metrics dashboard showing resource utilization, deployment frequency, and system health.
+1. Verify the CD pipeline configurations that define the promotion paths between environments.
+1. Review network controls for managing ingress/egress traffic and security boundaries.
 
 #### 3. Create a New Environment
-- Navigate to Infrastructure → Environments and review the existing Development and Production environments.
-- Click + Create Environment and enter the following configuration:
-  - Name: "Staging"
-  - Data Plane: "Choreo Cloud US Dataplane"
-  - DNS Prefix: "staging"
-  - Production Environment: Unchecked
-- Review the auto-generated DNS URL: "staging.{org-name}.choreoapis.dev".
-- Click Create and verify the Staging environment appears with "Active" status in your environment list.
+1. Navigate to `Infrastructure → Environments` and review the existing `Development` and `Production` environments.
+1. Click + Create Environment and enter the following configuration:
+  1. Name: `Staging`
+  1. Data Plane: `Choreo Cloud US Dataplane`
+  1. DNS Prefix: `staging`
+  1. Production Environment: `Unchecked`
+1. Review the auto-generated DNS URL: `{org-uuid}-staging.e1-us-east-azure.choreoapis.dev`
+1. Click Create and verify the Staging environment in your environment list.
 
 #### 4. Update the Default CD Pipeline
-- Navigate to DevOps → CD Pipelines and select the "Default US Deployment Pipeline".
-- Click the edit (✏️) icon next to the pipeline.
-- Click the "+" symbol between Development and Production environments.
-- Select "Staging" from the environment dropdown.
-- Review the pipeline sequence: Development → Staging → Production.
-- Click Update to save your changes.
-- Verify the pipeline visualization now shows the three-environment flow with arrows between each stage.
+1. Navigate to `DevOps → CD Pipelines`.
+1. Click the edit icon next to the `Default US Deployment Pipeline` pipeline.
+1. Click the `+` symbol between `Development` and `Production` environments.
+1. Select `Staging` from the environment dropdown.
+1. Review the pipeline sequence: `Development → Staging → Production`.
+1. Click Update to save your changes.
+1. Verify the pipeline visualization now shows the three-environment flow with arrows between each stage.
 
 #### 5. Manage Team Access
-- Navigate to Project Settings → Team.
-- Click "Invite Member" and add user "Joe" with email "joe@example.com".
-- Assign roles by checking "Project Admin" and "Developer" checkboxes.
-- Set environment access permissions for Development, Staging, and Production.
-- Click Send to issue the invitation.
+1. Navigate to `User Management → Users`.
+1. Click `Invite Users` and add user "Joe" with email `joseph@wso2.com`.
+1. Assign groups by checking `Project Admin` and `Developer` checkboxes.
+1. Click `Invite` to send the invitation email.
 
 #### 6. Enable Environment Promotion Workflow
-- Navigate to Governance → Workflows.
-- Find the "Environment Promotion" workflow in the list.
-- Toggle the Status switch from Off to On.
-- Under Roles, check "Admin", "Project Admin", and "Choreo DevOps".
-- Click Save to apply the workflow configuration.
-- Verify the workflow status shows Enabled with a green indicator.
+1. Navigate to `Governance → Workflows`.
+1. Find the `Environment Promotion` workflow in the list.
+1. Toggle the `Status` switch from `Off` to `On`.
+1. Under Roles, check `Admin`, `Project Admin`, and `Choreo Platform Engineer`.
+1. Click `Save` to apply the workflow configuration.
+1. Verify the workflow status shows Enabled with a green indicator.
 
-#### 7. Provision Resources
-- Navigate to DB & Services → Databases.
-- Click + Create and select "PostgreSQL" as the database type.
-- Configure the database:
-  - Service name: "customer-portal-db"
-  - Cloud provider: "Azure" or "AWS"
-  - Region: "US East" or region closest to your location
-  - Service plan: "Hobbyist" (1vCPU, 2GB RAM)
-- Click Create and wait for status to change from "Creating" to "Active".
-- Copy connection parameters:
-  - Host: customer-portal-db.postgres.database.azure.com
-  - Port: 5432
-  - Default User: postgres
-  - Default Database: postgres
-  - Password: [auto-generated password]
+#### 7. Provision OpenAI Egress API
+1. Navigate to `DB & Services → GenAI Services`.
+1. Click `Register Service` and select `OpenAI` as the provider.
+1. Configure the service:
+    1. Name: `OpenAI`,
+     **Note**: Use `OpenAI` name as it is to avoid additional steps in the lab session.
+    1. Version: `v1`
+1. Get OpenAI API Demo Key
+    1. Click on link([Get OpenAI Demo Key](https://9a7528ca-2277-4c65-b6c5-4958bea14335-dev.e1-us-east-azure.choreoapis.dev/default/openai-key-service/v1.0/key))
+    1. Copy `api_key` value
+1. Click Next and add API Key configuration:
+    1. Key Name: `OPENAI_API_KEY`
+    1. Value: [Value copied from the previous step]
+1. Click `Register` to complete setup.
+1. Next, Click on `Add to Marketplace` button.
 
 #### 8. Configure Network Policies for Egress Control
-- Navigate to Governance → Egress Control.
-- Click + Create to establish a new policy.
-- Select "Deny All" as the default rule.
-- Add an allow rule with:
-  - Name: "DB-Access"
-  - Type: "Egress"
-  - Target: "customer-portal-db.postgres.database.azure.com"
-  - Port: 5432
-  - Protocol: TCP
-- Click Add Rule and verify the rule appears in the policy list.
-- Confirm the policy status shows "Active" and test connectivity to confirm only database traffic is allowed.
+1. Navigate to `Governance → Egress Control`.
+1. Select `Deny All` as the Egress Control Type.
+1. Add an allow rule with:
+  1. Rule Name: `Allow Open AI`
+  1. Rule: `api.openai.com`
+1. Click `Add Rule` and verify the rule appears in the policy list.
 
+## Part 3: Operational Excellence
+#### 1. Promote the Application to higher environment
+1. Upon receiving the promotion requests, approve them
+1. Promote to production in the following order
+1. Accounts, BillParser, Bff API and Web Application
+
+#### 2. Monitor System Performance & Observability
+1. Navigate to `Insights → Operational`.
+  1. Set Environment: `Development`.
+  1. Set Time Period: `1D`.
+  1. Analyze CPU & Memory Usage across components.
+1. Navigate to `Observability → Metrics`.
+  1. Set Environment: `Development`.
+  1. Hover over component links to view request counts, latencies, and error percentages.
+  1. Check deployment logs for further insights.
+
+#### 3. Configure Latency Alert Rule
+1. Navigate to `Observability → Alerts`.
+1. Click `Create Alert Rule` to add a new alert rule.
+  1. Select Alert Type: `Latency`.
+  1. Choose Metric: `99th Percentile`.
+  1. Set Environment: `Development`.
+  1. Select Deployment Track: `master`.
+  1. Define Threshold (ms): `1000`.
+  1. Add Emails for notifications: `manjular@wso2.com`.
+1. Click `Create` to activate the alert.
 
 ## Part 2: Developer's Perspective
 
@@ -195,7 +215,7 @@ As nextstep we will create the dependent components for our application. Tipical
 ### 5. Deploy Dependent APIs to Dev Environment
 
 1. Deploy Accounts API
-    1. Go to `Accounts` component 
+    1. Go to `Accounts` component
     1. Click `Deploy`
     1. Click `Configure & Deploy`
     1. Click `Next` still 3rd step
@@ -203,7 +223,7 @@ As nextstep we will create the dependent components for our application. Tipical
     1. Now the component will be deployed to dev environment
 
 2. Deploy Receipts API
-    1. Go to `Receipts` component 
+    1. Go to `Receipts` component
     1. Click `Deploy`
     1. Click `Configure & Deploy`
     1. Click `Next` still 3rd step
@@ -212,11 +232,11 @@ As nextstep we will create the dependent components for our application. Tipical
 
 ### 3. Create the BFF API
 
-In this step ideally we should build the BFF API from scratch. For this tutorial we will use the pre-built BFF API fround in `expense-tracker/bffapi` directory. Lets configure it to be used as a component in our project. 
+In this step ideally we should build the BFF API from scratch. For this tutorial we will use the pre-built BFF API fround in `expense-tracker/bffapi` directory. Lets configure it to be used as a component in our project.
 
 We use a configuration file called `component.yaml` to provide aditional component details to Choreo.
 
-1. Configure BFF API Endpoint 
+1. Configure BFF API Endpoint
     1. Create a new file called `component.yaml` in `expense-tracker/bffapi/.choreo` directory.
     1. Add the following content to the file
         ```
@@ -267,9 +287,9 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Copy the connection string to `components.yaml`
     1. Update the source code with the correct environment variables
 
-3. Testing locally 
+3. Testing locally
 
-4. Debugging locally 
+4. Debugging locally
 
 5. Push changes to the repository
 
