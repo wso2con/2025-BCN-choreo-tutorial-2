@@ -1,0 +1,13 @@
+schemaVersion: 1.1
+
+endpoints:
+  - name: accounts-api
+    displayName: Accounts API
+    service:
+      basePath: /
+      port: 8080
+    type: REST
+    networkVisibilities:
+      - Project
+    schemaFilePath: ./openapi.yaml
+

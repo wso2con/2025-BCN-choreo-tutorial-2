@@ -304,7 +304,6 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Select project directory as `expense-tracker`
     1. Click `Create`
 
-### 5. Securing the application
 
 
 ### 6. Testing the application

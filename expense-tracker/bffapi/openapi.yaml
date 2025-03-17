@@ -1,0 +1,382 @@
+openapi: 3.0.0
+info:
+  title: BFF API
+  description: Backend for frontend API that provides bill management and bill parsing capabilities
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+paths:
+  /bills:
+    get:
+      summary: Get all bills
+      description: Returns a list of all bills with summary information
+      tags:
+        - bills
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bill'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a new bill
+      description: Creates a new bill with the provided information
+      tags:
+        - bills
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillInput'
+      responses:
+        '201':
+          description: Bill created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    description: ID of the created bill
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /bills/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the bill
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Get a bill by ID
+      description: Returns a single bill with all its items
+      tags:
+        - bills
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bill'
+        '404':
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Update a bill
+      description: Updates an existing bill with the provided information
+      tags:
+        - bills
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BillInput'
+      responses:
+        '200':
+          description: Bill updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bill updated successfully
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete a bill
+      description: Deletes a bill and all its items
+      tags:
+        - bills
+      responses:
+        '200':
+          description: Bill deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Bill deleted successfully
+        '404':
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /parser/parse:
+    post:
+      summary: Parse receipt image
+      description: Extract item details, totals, and other information from receipt images
+      tags:
+        - bill parser
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: JPG or PNG image of a receipt or bill
+                create_bill:
+                  type: boolean
+                  description: Whether to create a bill from the parsed data
+                  default: false
+                title:
+                  type: string
+                  description: Optional title for the bill (only used if create_bill is true)
+              required:
+                - image
+      responses:
+        '200':
+          description: Successfully parsed receipt
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ParsedReceipt'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Bill created successfully
+                      billId:
+                        type: integer
+                        description: ID of the created bill
+                      parsedData:
+                        $ref: '#/components/schemas/ParsedReceipt'
+        '400':
+          description: Bad request, missing image or unsupported format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    BillItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the bill item
+        bill_id:
+          type: integer
+          format: int64
+          description: ID of the bill this item belongs to
+        name:
+          type: string
+          description: Name of the item
+        description:
+          type: string
+          description: Description of the item
+        amount:
+          type: number
+          format: float
+          description: Price per unit
+        quantity:
+          type: integer
+          description: Quantity of the item
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+    Bill:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Unique identifier for the bill
+        title:
+          type: string
+          description: Title of the bill
+        description:
+          type: string
+          description: Description of the bill
+        total:
+          type: number
+          format: float
+          description: Total amount of the bill
+        due_date:
+          type: string
+          format: date-time
+          description: Due date of the bill
+        paid:
+          type: boolean
+          description: Whether the bill has been paid
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillItem'
+          description: Items in the bill
+        item_count:
+          type: integer
+          description: Number of items in the bill
+        created_at:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updated_at:
+          type: string
+          format: date-time
+          description: Last update timestamp
+    BillInput:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: Title of the bill
+        description:
+          type: string
+          description: Description of the bill
+        due_date:
+          type: string
+          format: date
+          description: Due date in YYYY-MM-DD format
+        paid:
+          type: boolean
+          description: Whether the bill has been paid
+          default: false
+        items:
+          type: array
+          items:
+            type: object
+            required:
+              - name
+              - amount
+            properties:
+              name:
+                type: string
+                description: Name of the item
+              description:
+                type: string
+                description: Description of the item
+              amount:
+                type: number
+                format: float
+                description: Price per unit
+              quantity:
+                type: integer
+                description: Quantity of the item
+                default: 1
+    ParsedReceipt:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Milk"
+              quantity:
+                type: number
+                example: 1
+              price:
+                type: number
+                example: 3.99
+            required:
+              - name
+              - quantity
+              - price
+        total:
+          type: number
+          example: 23.45
+        currency:
+          type: string
+          example: "USD"
+        date:
+          type: string
+          format: date
+          example: "2023-05-15"
+        merchant:
+          type: string
+          example: "Grocery Store Inc."
+      required:
+        - items
+        - total
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+      required:
+        - error

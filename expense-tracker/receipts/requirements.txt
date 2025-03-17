@@ -1,0 +1,8 @@
+flask==2.3.3
+werkzeug>=2.3.7
+openai
+python-dotenv
+gunicorn==21.2.0
+pillow==10.2.0  # For the test image generator
+requests==2.31.0  # For manual testing
+httpx>=0.25.0  # Required by OpenAI for newer versions

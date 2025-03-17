@@ -1,0 +1,96 @@
+openapi: 3.0.3
+info:
+  title: Bill Parser API
+  description: An API to extract item details and totals from receipt images using AI
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@example.com
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /parse-bill:
+    post:
+      summary: Parse receipt image
+      description: Extract item details, totals, and other information from receipt images
+      operationId: parseBill
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: JPG or PNG image of a receipt or bill
+              required:
+                - image
+      responses:
+        '200':
+          description: Successfully parsed receipt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParsedReceipt'
+        '400':
+          description: Bad request, missing image or unsupported format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    ParsedReceipt:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Milk"
+              quantity:
+                type: number
+                example: 1
+              price:
+                type: number
+                example: 3.99
+            required:
+              - name
+              - quantity
+              - price
+        total:
+          type: number
+          example: 23.45
+        currency:
+          type: string
+          example: "USD"
+        date:
+          type: string
+          format: date
+          example: "2023-05-15"
+        merchant:
+          type: string
+          example: "Grocery Store Inc."
+      required:
+        - items
+        - total
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "No image provided"
+      required:
+        - error
