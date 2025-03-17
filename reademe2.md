@@ -144,10 +144,10 @@ Choreo project allows you to group related components together. It also creates 
     1. Select project directory as `expense-tracker`
     1. Click `Create`
 
+As nextstep we will create the dependent components for our application. Tipically in an organization when building a new application you would consume existing APIs and databases. For this tutorial we will create the components that we will use in our application.
 
-### 2. Creating dependent components
 
-At this step we will create the dependent components for our application. Tipically in an organization when building a new application you would consume existing APIs and databases. For this tutorial we will create the components that we will use in our application.
+### 2. Creating the Accounts API
 
 1. Create Accounts API
     1. Go in to `Expense Tracker` project
@@ -160,59 +160,112 @@ At this step we will create the dependent components for our application. Tipica
     1. Click Edit in Component Directory and select `accounts`
     1. Select `go` as the build pack type
     1. Select language version as `1.x`
-    1. Endpoint details configuration
-        1. Enter port as `8080`
-        1. API Type as `REST` 
-        1. Base Path as `/`
-        1. Click Edit under Schema Path and select `accounts/openapi.yaml`
+    1. Check if component name set to `accounts`
     1. Click Create
+    1. You will be taken to the build page automatically
 
-1. Build and Deploy 
-
-1. Test Accounts API
+### 3. Create the Receipts API
 
 1. Create Receipts API
     1. Go in to `Expense Tracker` project
     1. Select `Create Component`
-    1. Select `Service Type`
+    1. Select `Service` Type
     1. Select `Authorize with Github`
     1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
     1. Refresh the repository list and select the `2025-BCN-choreo-tutorial-2` repository.
     1. Select `main` branch
-    1. Click Edit in Component Directory and select `accounts`
-    1. Select `go` as the build pack type
-    1. Select language version as `1.x`
-    1. Endpoint details configuration
-        1. Enter port as `8080`
-        1. API Type as `REST` 
-        1. Base Path as `/`
-        1. Click Edit under Schema Path and select `accounts/openapi.yaml`
+    1. Click Edit in Component Directory and select `receipts`
+    1. Select `Docker` as the build pack type
+    1. Select the docker file path as `receipts/Dockerfile`
+    1. Check if component name set to `receipts`
     1. Click Create
+    1. You will be taken to the build page automatically
 
-1. Build and Deploy Receipts API
+### 4. Connect Receipts API with OpenAI
 
-1. Test Receipts API
-    1.  
-    1. Use the following curl command to test the API replace the `{account_id}` with the account id you created in the previous step
-        ```
-        curl -X POST http://receipts.staging.choreoapis.dev/receipts \
-        -H "Content-Type: application/json" \
-        -d '{"name": "John Doe", "email": "john.doe@example.com"}'
-        ```
+  1. Check if you are in `receipts` component
+  1. Go to Dependencies > Connections
+  1. Select `Service` as the connection type
+  1. Select `OpenAI` service
+  1. And provide the connection name as `Open AI Connection`
+  1. Click `Create`
+  1. You will be taken to the connection page automatically
+  1. You can see a guide on how to the this connection but for this tutorial connection configuration is already done for the `receipts` component.
+
+### 5. Deploy Dependent APIs to Dev Environment
+
+1. Deploy Accounts API
+    1. Go to `Accounts` component 
+    1. Click `Deploy`
+    1. Click `Configure & Deploy`
+    1. Click `Next` still 3rd step
+    1. Click `Deploy`
+    1. Now the component will be deployed to dev environment
+
+2. Deploy Receipts API
+    1. Go to `Receipts` component 
+    1. Click `Deploy`
+    1. Click `Configure & Deploy`
+    1. Click `Next` still 3rd step
+    1. Click `Deploy`
+    1. Now the component will be deployed to dev environment
 
 ### 3. Create the BFF API
+
+In this step ideally we should build the BFF API from scratch. For this tutorial we will use the pre-built BFF API fround in `expense-tracker/bffapi` directory. Lets configure it to be used as a component in our project. 
+
+We use a configuration file called `component.yaml` to provide aditional component details to Choreo.
+
+1. Configure BFF API Endpoint 
+    1. Create a new file called `component.yaml` in `expense-tracker/bffapi/.choreo` directory.
+    1. Add the following content to the file
+        ```
+        schemaVersion: 1.1
+
+        endpoints:
+          - name: bff-api
+            displayName: BFF API
+            service:
+              basePath: /api
+              port: 9090
+            type: REST
+            networkVisibilities:
+              - Public
+            schemaFilePath: ./openapi.yaml
+        ```
+    1. Commit and push the changes to the repository
 
 1. Create a new component
     1. Go in to `Expense Tracker` project
     1. Select `Create Component`
-    1. Select `Service Type`
+    1. Select `Service` Type
     1. Select `Authorize with Github`
-    1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
-    1. Select project directory as `expense-tracker`
+    1. Select [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
+    1. Select `main` branch
+    1. Select project directory as `expense-tracker/bffapi`
+    1. Select `NodeJs` as the build pack type
+    1. Selevct language version as `20`
     1. Click `Create`
 
+2. Connect to the accounts components
+    1. Go to Dependancies > Connections
+    1. Select `Service` as the connection type
+    1. Select `Accounts` service
+    1. Provide the connection name as `Accounts Connection`
+    1. Click `Create`
+    1. You will be taken to the connection page automatically
+    1. Copy the connection string to `components.yaml`
+    1. Update the source code with the correct environment variables
 
-2. Connect to the dependent components
+3. Connect to the receipts components
+    1. Go to Dependancies > Connections
+    1. Select `Service` as the connection type
+    1. Select `Receipts` service
+    1. Provide the connection name as `Receipts Connection`
+    1. Click `Create`
+    1. You will be taken to the connection page automatically
+    1. Copy the connection string to `components.yaml`
+    1. Update the source code with the correct environment variables
 
 3. Testing locally 
 
