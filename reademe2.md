@@ -23,8 +23,7 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 1. Fork the [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository
 
 
-<details>
-<summary><h2>Part 1: Platform Engineer's Perspective</h2></summary>
+## Part 1: Platform Engineer's Perspective
 
 #### 1. Sign Up to Choreo
 - Navigate to the [Choreo console](https://console.choreo.dev/) and sign up using GitHub, Google, Microsoft, or email options.
@@ -102,10 +101,7 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 - Confirm the policy status shows "Active" and test connectivity to confirm only database traffic is allowed.
 
 
-</details>
-
-<details>
-<summary><h2>Part 2: Developer's Perspective</h2></summary>
+## Part 2: Developer's Perspective
 
 Lets develop an application with Choreo. For this tutorial, we will develop a simple webapplication to manage users accounts. Using this web application, user will be able to record their expences by either uploading a receipt image or by entering the expence details manually.
 
