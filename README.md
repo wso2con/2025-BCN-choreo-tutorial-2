@@ -26,7 +26,7 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 ## Part 1: Platform Engineer's Perspective
 
 #### 1. Sign Up to Choreo
-1. Navigate to the [Choreo console](https://console.choreo.dev/) and sign up using GitHub, Google, Microsoft, or email options.
+1. Navigate to the [Choreo console](https://choreo.dev/) and sign up using GitHub, Google, Microsoft, or email options.
 1. Complete the organization creation process by verifying the emails and OTP received.
 1. Select the "Platform Engineer (PE)" perspective from the Choreo Console.
 
@@ -78,7 +78,7 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
      **Note**: Use `OpenAI` name as it is to avoid additional steps in the lab session.
     1. Version: `v1`
 1. Get OpenAI API Demo Key
-    1. Click on link([Get OpenAI Demo Key](https://9a7528ca-2277-4c65-b6c5-4958bea14335-dev.e1-us-east-azure.choreoapis.dev/default/openai-key-service/v1.0/key))
+    1. Click on link([Get OpenAI Demo Key](https://308f5c04-e1a0-49e1-817b-e5a8d5422c26-dev.e1-us-east-azure.choreoapis.dev/demo-api-keys/openai-key-service/v1.0/key))
     1. Copy `api_key` value
 1. Click Next and add API Key configuration:
     1. Key Name: `OPENAI_API_KEY`
