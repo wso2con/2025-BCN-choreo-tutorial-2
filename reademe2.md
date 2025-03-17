@@ -133,12 +133,18 @@ The application follows a microservices architecture with the following componen
 All components are deployed and managed through Choreo, ensuring secure communication and monitoring.
 
 
-### 1. Setup
+### 1. Create a new project
 
-1. Install the Choreo CLI
+Choreo project allows you to group related components together. It also creates a newtwok boundry around the components and allows you to manage incoming and outgoing traffic.
+
 1. Create a new project
-    1. Project name: `Choreo-Tutorial-2`
-    1. Project description: `Choreo Tutorial 2`
+    1. project display name: `Expense Tracker`
+    1. Project name: `expense-tracker`
+    1. Project description: `Personal Expense Tracking Application`
+    1. Select `Authorize with Github`
+    1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
+    1. Select project directory as `expense-tracker`
+    1. Click `Create`
 
 
 ### 2. Creating dependent components
@@ -190,3 +196,4 @@ At this step we will create the dependent components for our application. Tipica
         -H "Content-Type: application/json" \
         -d '{"name": "John Doe", "email": "john.doe@example.com"}'
         ```
+
