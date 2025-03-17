@@ -1,0 +1,69 @@
+.App {
+  text-align: left;
+  min-height: 100vh;
+}
+
+/* Animation for tiny money icons in the background */
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+    opacity: 0.05;
+  }
+  100% {
+    transform: translateY(-40px) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(242, 242, 242, 0.5);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(46, 125, 50, 0.5);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 125, 50, 0.7);
+}
+
+/* Material UI overrides */
+.MuiPaper-root {
+  transition: all 0.2s ease-in-out !important;
+}
+
+.MuiListItem-root {
+  transition: all 0.1s ease-in-out !important;
+}
+
+.MuiFab-root {
+  transition: all 0.2s ease-in-out !important;
+}
+
+.MuiFab-root:hover {
+  transform: scale(1.05);
+}
+
+/* Add a subtle shadow to the expense items on hover */
+.MuiListItem-root:hover {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .MuiContainer-root {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}

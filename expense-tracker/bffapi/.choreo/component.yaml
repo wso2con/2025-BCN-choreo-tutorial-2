@@ -1,0 +1,19 @@
+schemaVersion: 1.1
+
+endpoints:
+  - name: bff-api
+    displayName: BFF API
+    service:
+      basePath: /api
+      port: 9090
+    type: REST
+    networkVisibilities:
+      - Public
+    schemaFilePath: ./openapi.yaml
+
+dependencies:
+    connectionReferences:
+    - name: Accounts
+      resourceRef: service:/expense-tracker/accounts/v1/5c69c/PROJECT
+    - name: Bill parser
+      resourceRef: service:/expense-tracker/billparser/v1/5c69c/PROJECT

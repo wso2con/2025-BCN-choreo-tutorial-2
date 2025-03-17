@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  bffapi:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - ACCOUNTS_API_URL=http://localhost:8080/api/v1
+      - BILL_PARSER_API_URL=http://localhost:8080
+      - NODE_ENV=development
+    volumes:
+      - ./:/app
+      - /app/node_modules

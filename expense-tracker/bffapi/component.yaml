@@ -1,0 +1,13 @@
+apiVersion: core.choreo.dev/v1alpha1
+kind: Component
+metadata:
+  name: bffapi
+  description: Backend for Frontend API for the bill management application
+  annotations:
+    github.com/project-name: choreo-tutorial
+    icon: https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg
+spec:
+  type: service
+  lifecycle: production
+  owner: jo
+  project: Bills-Management
