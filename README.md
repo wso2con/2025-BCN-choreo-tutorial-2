@@ -37,8 +37,8 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
 
 #### 2. Explore Platform Engineering Perspective Overview
 1. Review the Data Plane Management section showing data plane status and regional distribution.
-1. Examine the pre-configured environments (Development, Production) with their specific runtime characteristics.
-1. Inspect the operational metrics dashboard showing resource utilization, deployment frequency, and system health.
+1. Examine the pre-configured environments (Development, Production) on the Cloud Data Plane.
+1. Inspect the user management dashboard displaying users, groups, and roles.
 1. Verify the CD pipeline configurations that define the promotion paths between environments.
 1. Review network controls for managing ingress/egress traffic and security boundaries.
 
@@ -48,7 +48,7 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
   1. Name: `Staging`
   1. Data Plane: `Choreo Cloud US Dataplane`
   1. DNS Prefix: `staging`
-  1. Production Environment: `Unchecked`
+  1. Production Environment: `Checked`
 1. Review the auto-generated DNS URL: `{org-uuid}-staging.e1-us-east-azure.choreoapis.dev`
 1. Click Create and verify the Staging environment in your environment list.
 
@@ -64,7 +64,7 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
 #### 5. Manage Team Access
 1. Navigate to `User Management → Users`.
 1. Click `Invite Users` and add user "Joe" with email `joseph@wso2.com`.
-1. Assign groups by checking `Project Admin` and `Developer` checkboxes.
+1. Assign groups by checking `Admin`, `Project Admin` and `Developer` checkboxes.
 1. Click `Invite` to send the invitation email.
 
 #### 6. Enable Environment Promotion Workflow
@@ -93,10 +93,11 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
 
 #### 8. Configure Network Policies for Egress Control
 1. Navigate to `Governance → Egress Control`.
+1. Click `+Create` to configure Egress policies at organizational level.
 1. Select `Deny All` as the Egress Control Type.
 1. Add an allow rule with:
-  1. Rule Name: `Allow Open AI`
-  1. Rule: `api.openai.com`
+    1. Rule Name: `Allow Open AI`
+    1. Rule: `api.openai.com`
 1. Click `Add Rule` and verify the rule appears in the policy list.
 
 ## Part 2: Developer's Perspective
@@ -274,12 +275,12 @@ We use a configuration file called `component.yaml` to provide aditional compone
 ### 7. Test locally
 
 1. Testing BFF API locally
-    1. Run `choreo login` to login to Choreo from the CLI 
+    1. Run `choreo login` to login to Choreo from the CLI
     1. Run `choreo change-org` to change to correct organization
     1. Run `choreo connect -c bffapi` to connect to the development environment for the bffapi component.
     1. Retrive the accounts component url from the CLI with `choreo describe component`
     1. Run `curl -X GET "http://<accounts-component-url>/bills"` to test the accounts API
-    1. Lets test bffapi locally with the dependacies in dev environment 
+    1. Lets test bffapi locally with the dependacies in dev environment
         1. In the same terminal run `npm run start`
         1. In a new terminal run `curl -X GET "http://<bffapi-component-url>/api/bills"`
         1. You should see the bills from the accounts component
