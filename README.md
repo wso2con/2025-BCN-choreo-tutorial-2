@@ -278,7 +278,7 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Go to `Dependancies > Connections`
     1. Select `Service` as the connection type
     1. Select `Accounts` service
-    1. Provide the connection name as `Accounts Connection`
+    1. Provide the connection name as `Accounts`
     1. Click `Create`
     1. You will be taken to the connection page automatically
     1. Copy the connection string to `components.yaml`
@@ -288,7 +288,7 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Go to `Dependancies > Connections`
     1. Select `Service` as the connection type
     1. Select `Receipts` service
-    1. Provide the connection name as `Receipts Connection`
+    1. Provide the connection name as `Receipts`
     1. Click `Create`
     1. You will be taken to the connection page automatically
     1. Copy the connection string to `components.yaml`
@@ -297,9 +297,16 @@ We use a configuration file called `component.yaml` to provide aditional compone
 4. Push the changes to Choreo
     1. Commit and push the changes to the repository
     1. Choreo will automatically detect the changes and trigger a build.
-    1. Deploy the new built to dev environment by going to `Deployments` page and clicking `Configure & Deploy` button.
+    1. Deploy the build to dev environment by going to `Deployments` page and clicking `Configure & Deploy` button.
 
 3. Testing locally
+    1. Run `choreo login` to login to Choreo from the CLI
+    1. Run `choreo change-org` to change to correct organization
+    1. Run `choreo connect -p expense-tracker -e Development` to connect to the development environment
+    1. Retrive the accounts component url from the CLI with `choreo describe component`
+    1. Run `curl -X GET "http://<accounts-component-url>/bills"` to test the accounts API
+    1. Lets add a new bill using following curl ``
+
 
 4. Debugging locally
 

@@ -5,8 +5,8 @@ dotenv.config();
 
 // Create axios instances for each backend service with base URLs from environment variables
 // sample nodeJS code snippet
-const accountsServiceurl = process.env.CHOREO_ACCOUNTS_CONNECTION_SERVICEURL;
-const accountsChoreoapikey = process.env.CHOREO_ACCOUNTS_CONNECTION_CHOREOAPIKEY;
+const accountsServiceurl = process.env.CHOREO_ACCOUNTS_SERVICEURL;
+const accountsChoreoapikey = process.env.CHOREO_ACCOUNTS_CHOREOAPIKEY;
 
 const accountsClient = axios.create({
   baseURL: accountsServiceurl,
@@ -17,8 +17,8 @@ const accountsClient = axios.create({
 });
 
 // sample nodeJS code snippet
-const receiptsServiceurl = process.env.CHOREO_RECEIPTS_CONNECTION_SERVICEURL;
-const receiptsChoreoapikey = process.env.CHOREO_RECEIPTS_CONNECTION_CHOREOAPIKEY;
+const receiptsServiceurl = process.env.CHOREO_RECEIPTS_SERVICEURL;
+const receiptsChoreoapikey = process.env.CHOREO_RECEIPTS_CHOREOAPIKEY;
 
 const billParserClient = axios.create({
   baseURL: receiptsServiceurl,

@@ -12,7 +12,7 @@ endpoints:
     schemaFilePath: ./openapi.yaml
 dependencies:
     connectionReferences:
-    - name: Accounts Connection
+    - name: Accounts
       resourceRef: service:/expense-tracker/accounts/v1/5c69c/PROJECT
-    - name: Receipts Connection
+    - name: Receipts
       resourceRef: service:/expense-tracker/receipts/v1/5c69c/PROJECT
