@@ -48,7 +48,7 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
   1. Name: `Staging`
   1. Data Plane: `Choreo Cloud US Dataplane`
   1. DNS Prefix: `staging`
-  1. Production Environment: `Unchecked`
+  1. Production Environment: `Checked`
 1. Review the auto-generated DNS URL: `{org-uuid}-staging.e1-us-east-azure.choreoapis.dev`
 1. Click Create and verify the Staging environment in your environment list.
 
@@ -64,7 +64,7 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
 #### 5. Manage Team Access
 1. Navigate to `User Management → Users`.
 1. Click `Invite Users` and add user "Joe" with email `joseph@wso2.com`.
-1. Assign groups by checking `Project Admin` and `Developer` checkboxes.
+1. Assign groups by checking `Admin`, `Project Admin` and `Developer` checkboxes.
 1. Click `Invite` to send the invitation email.
 
 #### 6. Enable Environment Promotion Workflow
@@ -275,12 +275,12 @@ We use a configuration file called `component.yaml` to provide aditional compone
 ### 7. Test locally
 
 1. Testing BFF API locally
-    1. Run `choreo login` to login to Choreo from the CLI 
+    1. Run `choreo login` to login to Choreo from the CLI
     1. Run `choreo change-org` to change to correct organization
     1. Run `choreo connect -c bffapi` to connect to the development environment for the bffapi component.
     1. Retrive the accounts component url from the CLI with `choreo describe component`
     1. Run `curl -X GET "http://<accounts-component-url>/bills"` to test the accounts API
-    1. Lets test bffapi locally with the dependacies in dev environment 
+    1. Lets test bffapi locally with the dependacies in dev environment
         1. In the same terminal run `npm run start`
         1. In a new terminal run `curl -X GET "http://<bffapi-component-url>/api/bills"`
         1. You should see the bills from the accounts component
