@@ -238,6 +238,9 @@ In this step ideally we should build the BFF API from scratch. For this tutorial
 
 We use a configuration file called `component.yaml` to provide aditional component details to Choreo.
 
+1. Create a nodejs express service which will be used as a BFF API
+    1. This step is already done. Use the provided `bffapi` directory as a starting point.
+
 1. Configure BFF API Endpoint
     1. Create a new file called `component.yaml` in `expense-tracker/bffapi/.choreo` directory.
     1. Add the following content to the file
@@ -270,7 +273,7 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Click `Create`
 
 2. Connect to the accounts components
-    1. Go to Dependancies > Connections
+    1. Go to `Dependancies > Connections`
     1. Select `Service` as the connection type
     1. Select `Accounts` service
     1. Provide the connection name as `Accounts Connection`
@@ -280,7 +283,7 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Update the source code with the correct environment variables
 
 3. Connect to the receipts components
-    1. Go to Dependancies > Connections
+    1. Go to `Dependancies > Connections`
     1. Select `Service` as the connection type
     1. Select `Receipts` service
     1. Provide the connection name as `Receipts Connection`

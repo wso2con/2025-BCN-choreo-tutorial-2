@@ -8,8 +8,7 @@ endpoints:
       port: 8080
     type: REST
     networkVisibilities:
-      - Public
-      - Organization
+      - Project
     schemaFilePath: ./openapi.yaml
 dependencies:
     connectionReferences:

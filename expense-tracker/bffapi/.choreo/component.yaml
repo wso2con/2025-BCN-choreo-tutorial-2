@@ -10,3 +10,7 @@ endpoints:
     networkVisibilities:
       - Public
     schemaFilePath: ./openapi.yaml
+dependencies:
+    connectionReferences:
+    - name: Accounts Connection
+      resourceRef: service:/expense-tracker/accounts/v1/5c69c/PROJECT
