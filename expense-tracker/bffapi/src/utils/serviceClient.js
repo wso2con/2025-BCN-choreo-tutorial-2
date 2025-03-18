@@ -17,13 +17,14 @@ const accountsClient = axios.create({
 });
 
 // sample nodeJS code snippet
-const billServiceurl = process.env.CHOREO_BILL_PARSER_SERVICEURL;
-const billChoreoapikey = process.env.CHOREO_BILL_PARSER_CHOREOAPIKEY;
+const receiptServiceurl = process.env.CHOREO_RECEIPTS_CONNECTION_SERVICEURL;
+const receiptChoreoapikey = process.env.CHOREO_RECEIPTS_CONNECTION_CHOREOAPIKEY;
+
 const billParserClient = axios.create({
-  baseURL: billServiceurl,
+  baseURL: receiptServiceurl,
   headers: {
     'Content-Type': 'application/json',
-    'Choreo-API-Key': `${billChoreoapikey}`
+    'Choreo-API-Key': `${receiptChoreoapikey}`
   }
 });
 

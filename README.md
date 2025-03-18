@@ -292,6 +292,11 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Copy the connection string to `components.yaml`
     1. Update the source code with the correct environment variables
 
+4. Push the changes to Choreo
+    1. Commit and push the changes to the repository
+    1. Choreo will automatically detect the changes and trigger a build.
+    1. Deploy the new built to dev environment by going to `Deployments` page and clicking `Configure & Deploy` button.
+
 3. Testing locally
 
 4. Debugging locally
