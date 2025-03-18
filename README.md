@@ -21,6 +21,11 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 ---
 ## Prerequisites
 1. Fork the [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository
+2. Clone the repository to your local machine
+3. Install the Choreo CLI - We will use a pre-release version of the Choreo CLI for this tutorial to demostrate upcoming features.
+```
+bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
+```
 
 
 ## Part 1: Platform Engineer's Perspective
@@ -125,9 +130,6 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 
 Lets develop an application with Choreo. For this tutorial, we will develop a simple webapplication to manage users accounts. Using this web application, user will be able to record their expences by either uploading a receipt image or by entering the expence details manually.
 
-#### User Interface
-
-
 #### Architecture
 
 The application follows a microservices architecture with the following components:
@@ -204,13 +206,13 @@ As nextstep we will create the dependent components for our application. Tipical
 ### 4. Connect Receipts API with OpenAI
 
   1. Check if you are in `receipts` component
-  1. Go to Dependencies > Connections
+  1. Go to `Dependencies > Connections`
   1. Select `Service` as the connection type
   1. Select `OpenAI` service
   1. And provide the connection name as `Open AI Connection`
   1. Click `Create`
   1. You will be taken to the connection page automatically
-  1. You can see a guide on how to the this connection but for this tutorial connection configuration is already done for the `receipts` component.
+  1. You can see a guide on how to add the connection to the component but for this tutorial connection configuration is already done.
 
 ### 5. Deploy Dependent APIs to Dev Environment
 
@@ -244,7 +246,7 @@ We use a configuration file called `component.yaml` to provide aditional compone
 
         endpoints:
           - name: bff-api
-            displayName: BFF API
+            displayName: BFF API Endpoint
             service:
               basePath: /api
               port: 9090
