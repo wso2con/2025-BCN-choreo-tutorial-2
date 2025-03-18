@@ -21,6 +21,11 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 ---
 ## Prerequisites
 1. Fork the [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository
+2. Clone the repository to your local machine
+3. Install the Choreo CLI - We will use a pre-release version of the Choreo CLI for this tutorial to demostrate upcoming features.
+```
+bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
+```
 
 
 ## Part 1: Platform Engineer's Perspective
@@ -125,9 +130,6 @@ Summary of achievements, benefits realized, and exploration of advanced capabili
 
 Lets develop an application with Choreo. For this tutorial, we will develop a simple webapplication to manage users accounts. Using this web application, user will be able to record their expences by either uploading a receipt image or by entering the expence details manually.
 
-#### User Interface
-
-
 #### Architecture
 
 The application follows a microservices architecture with the following components:
@@ -167,9 +169,9 @@ Choreo project allows you to group related components together. It also creates 
 As nextstep we will create the dependent components for our application. Tipically in an organization when building a new application you would consume existing APIs and databases. For this tutorial we will create the components that we will use in our application.
 
 
-### 2. Creating the Accounts API
+### 2. Create the Accounts API
 
-1. Create Accounts API
+1. Create the Accounts API
     1. Go in to `Expense Tracker` project
     1. Select `Create Component`
     1. Select `Service Type`
@@ -177,7 +179,7 @@ As nextstep we will create the dependent components for our application. Tipical
     1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
     1. Refresh the repository list and select the `2025-BCN-choreo-tutorial-2` repository.
     1. Select `main` branch
-    1. Click Edit in Component Directory and select `accounts`
+    1. Click Edit in Component Directory and select `expense-tracker/accounts`
     1. Select `go` as the build pack type
     1. Select language version as `1.x`
     1. Check if component name set to `accounts`
@@ -186,7 +188,7 @@ As nextstep we will create the dependent components for our application. Tipical
 
 ### 3. Create the Receipts API
 
-1. Create Receipts API
+1. Create the Receipts API
     1. Go in to `Expense Tracker` project
     1. Select `Create Component`
     1. Select `Service` Type
@@ -194,25 +196,25 @@ As nextstep we will create the dependent components for our application. Tipical
     1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
     1. Refresh the repository list and select the `2025-BCN-choreo-tutorial-2` repository.
     1. Select `main` branch
-    1. Click Edit in Component Directory and select `receipts`
+    1. Click Edit in Component Directory and select `expense-tracker/receipts`
     1. Select `Docker` as the build pack type
     1. Select the docker file path as `receipts/Dockerfile`
     1. Check if component name set to `receipts`
     1. Click Create
     1. You will be taken to the build page automatically
 
-### 4. Connect Receipts API with OpenAI
+### 4. Connect the Receipts API with OpenAI
 
   1. Check if you are in `receipts` component
-  1. Go to Dependencies > Connections
+  1. Go to `Dependencies > Connections`
   1. Select `Service` as the connection type
   1. Select `OpenAI` service
   1. And provide the connection name as `Open AI Connection`
   1. Click `Create`
   1. You will be taken to the connection page automatically
-  1. You can see a guide on how to the this connection but for this tutorial connection configuration is already done for the `receipts` component.
+  1. You can see a guide on how to add the connection to the component but for this tutorial connection configuration is already done.
 
-### 5. Deploy Dependent APIs to Dev Environment
+### 5. Deploy the Accounts and Receipts APIs to the Dev Environment
 
 1. Deploy Accounts API
     1. Go to `Accounts` component
@@ -230,11 +232,14 @@ As nextstep we will create the dependent components for our application. Tipical
     1. Click `Deploy`
     1. Now the component will be deployed to dev environment
 
-### 3. Create the BFF API
+### 6. Create the BFF API
 
 In this step ideally we should build the BFF API from scratch. For this tutorial we will use the pre-built BFF API fround in `expense-tracker/bffapi` directory. Lets configure it to be used as a component in our project.
 
 We use a configuration file called `component.yaml` to provide aditional component details to Choreo.
+
+1. Create a nodejs express service which will be used as a BFF API
+    1. This step is already done. Use the provided `bffapi` directory as a starting point.
 
 1. Configure BFF API Endpoint
     1. Create a new file called `component.yaml` in `expense-tracker/bffapi/.choreo` directory.
@@ -244,7 +249,7 @@ We use a configuration file called `component.yaml` to provide aditional compone
 
         endpoints:
           - name: bff-api
-            displayName: BFF API
+            displayName: BFF API Endpoint
             service:
               basePath: /api
               port: 9090
@@ -266,49 +271,64 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Select `NodeJs` as the build pack type
     1. Selevct language version as `20`
     1. Click `Create`
+    1. You will be taken to the build page automatically
+    1. Click on `Auto Build on Commit`
 
 2. Connect to the accounts components
-    1. Go to Dependancies > Connections
+    1. Go to `Dependancies > Connections`
     1. Select `Service` as the connection type
     1. Select `Accounts` service
-    1. Provide the connection name as `Accounts Connection`
+    1. Provide the connection name as `Accounts`
     1. Click `Create`
     1. You will be taken to the connection page automatically
     1. Copy the connection string to `components.yaml`
     1. Update the source code with the correct environment variables
 
 3. Connect to the receipts components
-    1. Go to Dependancies > Connections
+    1. Go to `Dependancies > Connections`
     1. Select `Service` as the connection type
     1. Select `Receipts` service
-    1. Provide the connection name as `Receipts Connection`
+    1. Provide the connection name as `Receipts`
     1. Click `Create`
     1. You will be taken to the connection page automatically
     1. Copy the connection string to `components.yaml`
     1. Update the source code with the correct environment variables
 
-3. Testing locally
+4. Push the changes to Choreo
+    1. Commit and push the changes to the repository
+    1. Choreo will automatically detect the changes and trigger a build.
+    1. Deploy the build to dev environment by going to `Deployments` page and clicking `Configure & Deploy` button
 
-4. Debugging locally
+### 7. Test locally
 
-5. Push changes to the repository
+1. Testing BFF API locally
+    1. Run `choreo login` to login to Choreo from the CLI 
+    1. Run `choreo change-org` to change to correct organization
+    1. Run `choreo connect -c bffapi` to connect to the development environment for the bffapi component.
+    1. Retrive the accounts component url from the CLI with `choreo describe component`
+    1. Run `curl -X GET "http://<accounts-component-url>/bills"` to test the accounts API
+    1. Lets test bffapi locally with the dependacies in dev environment 
+        1. In the same terminal run `npm run start`
+        1. In a new terminal run `curl -X GET "http://<bffapi-component-url>/api/bills"`
+        1. You should see the bills from the accounts component
 
-### 4. Create the web application
+### 8. Create the web application
 
-1. Create a new component
+1. Create a webapp component
     1. Go in to `Expense Tracker` project
     1. Select `Create Component`
     1. Select `Web Application`
     1. Select `Authorize with Github`
     1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
-    1. Select project directory as `expense-tracker`
+    1. Select project directory as `expense-tracker/webapp`
+    1. Select `React` as the build pack type
+    1. Enter `npm run build` as the Build Command
+    1. Enter Build Path as `/build`
+    1. Node version as `20`
     1. Click `Create`
 
+### 9. Testing the application
 
-
-### 6. Testing the application
-
-
-### 7. Architecture Diagram
-
-
+1. Testing the application
+    1. Go to `Webapp` component
+    2. Click the public endpoint to open the application
