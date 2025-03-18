@@ -7,6 +7,10 @@ const billsRouter = express.Router();
 billsRouter.get('/', async (req, res) => {
   try {
     const response = await accountsClient.get('/bills');
+    // If response is null or undefined, return an empty array
+    if (!response || !response.data) {
+      return res.json([]);
+    }
     res.json(response.data);
   } catch (error) {
     console.error('Error fetching bills:', error.message);
