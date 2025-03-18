@@ -271,6 +271,8 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Select `NodeJs` as the build pack type
     1. Selevct language version as `20`
     1. Click `Create`
+    1. You will be taken to the build page automatically
+    1. Click on `Auto Build on Commit`
 
 2. Connect to the accounts components
     1. Go to `Dependancies > Connections`
