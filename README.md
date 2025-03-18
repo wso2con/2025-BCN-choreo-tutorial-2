@@ -99,33 +99,6 @@ bash <(curl -s https://cli.choreo.dev/install.sh) v1.2.82503121000
   1. Rule: `api.openai.com`
 1. Click `Add Rule` and verify the rule appears in the policy list.
 
-## Part 3: Operational Excellence
-#### 1. Promote the Application to higher environment
-1. Upon receiving the promotion requests, approve them
-1. Promote to production in the following order
-1. Accounts, BillParser, Bff API and Web Application
-
-#### 2. Monitor System Performance & Observability
-1. Navigate to `Insights → Operational`.
-  1. Set Environment: `Development`.
-  1. Set Time Period: `1D`.
-  1. Analyze CPU & Memory Usage across components.
-1. Navigate to `Observability → Metrics`.
-  1. Set Environment: `Development`.
-  1. Hover over component links to view request counts, latencies, and error percentages.
-  1. Check deployment logs for further insights.
-
-#### 3. Configure Latency Alert Rule
-1. Navigate to `Observability → Alerts`.
-1. Click `Create Alert Rule` to add a new alert rule.
-  1. Select Alert Type: `Latency`.
-  1. Choose Metric: `99th Percentile`.
-  1. Set Environment: `Development`.
-  1. Select Deployment Track: `master`.
-  1. Define Threshold (ms): `1000`.
-  1. Add Emails for notifications: `manjular@wso2.com`.
-1. Click `Create` to activate the alert.
-
 ## Part 2: Developer's Perspective
 
 Lets develop an application with Choreo. For this tutorial, we will develop a simple webapplication to manage users accounts. Using this web application, user will be able to record their expences by either uploading a receipt image or by entering the expence details manually.
@@ -161,7 +134,6 @@ Choreo project allows you to group related components together. It also creates 
     1. Project description: `Personal Expense Tracking Application`
     1. Select `Authorize with Github`
     1. Go though the github flow and authorize the application to access [2025-BCN-choreo-tutorial-2](https://github.com/hevayo/2025-BCN-choreo-tutorial-2) repository.
-      1. //TODO: Add a screenshot of the github flow
     1. Select correct Organization, Repository and Branch
     1. Select project directory as `expense-tracker`
     1. Click `Create`
@@ -326,9 +298,55 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Enter Build Path as `/build`
     1. Node version as `20`
     1. Click `Create`
+2. Connect to the BFF API with webapp
+    1. Disable Authentication for bffapi
+        1. Go to deployment page of bffapi
+        1. Clieck `Endpoint Configuration`
+        1. Uncheck `OAuth2`
+        1. Click `Deploy`
+    2. Connect to the bffapi with webapp
+        1. Go to bffapi component overview page
+        2. Go to deployment page of webapp
+        3. Click `Configure & Deploy`
+        4. Past the bffapi url as apiUrl in `window.configs`
+        ```
+        window.configs = {
+            apiUrl: 'http://<bffapi-component-url>/',
+        };
+        ```
+        1. Disable `Managed Authentication with Choreo`
+        5. Click `Deploy`
 
 ### 9. Testing the application
 
 1. Testing the application
     1. Go to `Webapp` component
     2. Click the public endpoint to open the application
+
+
+## Part 3: Operational Excellence
+#### 1. Promote the Application to higher environment
+1. Upon receiving the promotion requests, approve them
+1. Promote to production in the following order
+1. Accounts, BillParser, Bff API and Web Application
+
+#### 2. Monitor System Performance & Observability
+1. Navigate to `Insights → Operational`.
+  1. Set Environment: `Development`.
+  1. Set Time Period: `1D`.
+  1. Analyze CPU & Memory Usage across components.
+1. Navigate to `Observability → Metrics`.
+  1. Set Environment: `Development`.
+  1. Hover over component links to view request counts, latencies, and error percentages.
+  1. Check deployment logs for further insights.
+
+#### 3. Configure Latency Alert Rule
+1. Navigate to `Observability → Alerts`.
+1. Click `Create Alert Rule` to add a new alert rule.
+  1. Select Alert Type: `Latency`.
+  1. Choose Metric: `99th Percentile`.
+  1. Set Environment: `Development`.
+  1. Select Deployment Track: `master`.
+  1. Define Threshold (ms): `1000`.
+  1. Add Emails for notifications: `manjular@wso2.com`.
+1. Click `Create` to activate the alert.
