@@ -218,7 +218,7 @@ We use a configuration file called `component.yaml` to provide aditional compone
     1. Create a new file called `component.yaml` in `expense-tracker/bffapi/.choreo` directory.
     1. Add the following content to the file
         ```
-        schemaVersion: 1.1
+        schemaVersion: 1.2
 
         endpoints:
           - name: bff-api
