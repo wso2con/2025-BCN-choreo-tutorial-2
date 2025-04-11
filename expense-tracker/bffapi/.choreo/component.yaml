@@ -1,0 +1,12 @@
+schemaVersion: 1.2
+
+endpoints:
+  - name: bff-api
+    displayName: BFF API Endpoint
+    service:
+      basePath: /api
+      port: 9090
+    type: REST
+    networkVisibilities:
+      - Public
+    schemaFilePath: ./openapi.yaml
