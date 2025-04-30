@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Container, 
-  Typography, 
-  Box, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  Paper, 
-  TextField, 
-  Button, 
+import {
+  Container,
+  Typography,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  TextField,
+  Button,
   Grid,
   AppBar,
   Toolbar,
@@ -87,6 +87,8 @@ function App() {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+
 
   // Fetch bills from API
   const fetchBills = async () => {
@@ -94,7 +96,7 @@ function App() {
     try {
       const data = await billsApi.getAllBills();
       setBills(data);
-      
+
       // Transform bills to expenses for display
       const transformedExpenses: ExpenseBill[] = data.map(bill => ({
         id: bill.id,
@@ -103,7 +105,7 @@ function App() {
         date: new Date(bill.due_date).toISOString().split('T')[0],
         paid: bill.paid
       }));
-      
+
       setExpenses(transformedExpenses);
       setError(null);
     } catch (err) {
@@ -147,7 +149,7 @@ function App() {
   const handleAddExpense = async () => {
     if (title && amount) {
       setIsSubmitting(true);
-      
+
       try {
         const billData: BillInput = {
           title,
@@ -163,7 +165,7 @@ function App() {
             }
           ]
         };
-        
+
         await billsApi.createBill(billData);
         showSnackbar('Expense added successfully', 'success');
         fetchBills();
@@ -187,14 +189,14 @@ function App() {
   const handleFileUpload = async () => {
     if (selectedFile) {
       setIsSubmitting(true);
-      
+
       try {
         // Upload the image and create a bill
         const result = await billParserApi.createBillFromImage(
           selectedFile,
           `Bill from ${selectedFile.name}`
         );
-        
+
         showSnackbar('Bill processed successfully', 'success');
         fetchBills();
         handleCloseDialog();
@@ -261,13 +263,13 @@ function App() {
             </Typography>
           </Toolbar>
         </AppBar>
-        
+
         <Container maxWidth="md" sx={{ mt: 3 }}>
-          <Paper 
-            elevation={3} 
-            sx={{ 
-              p: 2, 
-              mb: 2, 
+          <Paper
+            elevation={3}
+            sx={{
+              p: 2,
+              mb: 2,
               borderRadius: '12px',
               backgroundColor: 'rgba(255, 255, 255, 0.95)',
             }}
@@ -280,7 +282,7 @@ function App() {
                 ${calculateTotal()}
               </Typography>
             </Box>
-            
+
             {isLoading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
                 <CircularProgress color="primary" />
@@ -290,9 +292,9 @@ function App() {
                 <Typography variant="body1" color="error">
                   {error}
                 </Typography>
-                <Button 
-                  variant="outlined" 
-                  color="primary" 
+                <Button
+                  variant="outlined"
+                  color="primary"
                   sx={{ mt: 2 }}
                   onClick={() => fetchBills()}
                 >
@@ -300,7 +302,7 @@ function App() {
                 </Button>
               </Box>
             ) : (
-              <List sx={{ 
+              <List sx={{
                 maxHeight: isMobile ? 'calc(100vh - 250px)' : 'none',
                 overflow: isMobile ? 'auto' : 'visible'
               }}>
@@ -312,24 +314,24 @@ function App() {
                   </Box>
                 ) : (
                   expenses.map((expense) => (
-                    <ListItem 
-                      key={expense.id} 
-                      divider 
-                      sx={{ 
-                        borderRadius: '8px', 
+                    <ListItem
+                      key={expense.id}
+                      divider
+                      sx={{
+                        borderRadius: '8px',
                         mb: 1,
-                        '&:hover': { 
-                          backgroundColor: 'rgba(102, 187, 106, 0.1)' 
+                        '&:hover': {
+                          backgroundColor: 'rgba(102, 187, 106, 0.1)'
                         }
                       }}
                     >
-                      <ListItemText 
-                        primary={expense.title} 
-                        secondary={`Date: ${expense.date} ${expense.paid ? '• Paid' : '• Unpaid'}`} 
+                      <ListItemText
+                        primary={expense.title}
+                        secondary={`Date: ${expense.date} ${expense.paid ? '• Paid' : '• Unpaid'}`}
                         primaryTypographyProps={{ fontWeight: 500 }}
                       />
-                      <Typography variant="body1" sx={{ 
-                        fontWeight: 'bold', 
+                      <Typography variant="body1" sx={{
+                        fontWeight: 'bold',
                         color: theme.palette.primary.main
                       }}>
                         ${expense.amount.toFixed(2)}
@@ -343,12 +345,12 @@ function App() {
         </Container>
 
         {/* Floating Action Button */}
-        <Fab 
-          color="primary" 
-          aria-label="add" 
-          sx={{ 
-            position: 'fixed', 
-            bottom: 20, 
+        <Fab
+          color="primary"
+          aria-label="add"
+          sx={{
+            position: 'fixed',
+            bottom: 20,
             right: 20,
             boxShadow: '0 8px 16px rgba(46, 125, 50, 0.3)'
           }}
@@ -358,9 +360,9 @@ function App() {
         </Fab>
 
         {/* Add Expense Dialog */}
-        <Dialog 
-          open={openDialog} 
-          onClose={handleCloseDialog} 
+        <Dialog
+          open={openDialog}
+          onClose={handleCloseDialog}
           fullScreen={isMobile}
           fullWidth
           maxWidth="sm"
@@ -371,8 +373,8 @@ function App() {
             }
           }}
         >
-          <DialogTitle sx={{ 
-            bgcolor: 'primary.main', 
+          <DialogTitle sx={{
+            bgcolor: 'primary.main',
             color: 'white',
             m: 0,
             p: 2,
@@ -407,11 +409,11 @@ function App() {
               </IconButton>
             )}
           </DialogTitle>
-          
+
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs 
-              value={currentTab} 
-              onChange={handleTabChange} 
+            <Tabs
+              value={currentTab}
+              onChange={handleTabChange}
               variant="fullWidth"
               textColor="primary"
               indicatorColor="primary"
@@ -420,7 +422,7 @@ function App() {
               <Tab label="Upload Bill" />
             </Tabs>
           </Box>
-          
+
           <DialogContent>
             {currentTab === 0 ? (
               <Box component="form" noValidate sx={{ mt: 1 }}>
@@ -459,9 +461,9 @@ function App() {
                       onChange={handleFileChange}
                     />
                     <label htmlFor="gallery-file">
-                      <Button 
-                        variant="outlined" 
-                        component="span" 
+                      <Button
+                        variant="outlined"
+                        component="span"
                         startIcon={<ImageIcon />}
                         sx={{ mb: 2 }}
                       >
@@ -469,7 +471,7 @@ function App() {
                       </Button>
                     </label>
                   </Grid>
-                  
+
                   <Grid item>
                     <input
                       accept="image/*"
@@ -480,8 +482,8 @@ function App() {
                       onChange={handleFileChange}
                     />
                     <label htmlFor="camera-file">
-                      <Button 
-                        variant="contained" 
+                      <Button
+                        variant="contained"
                         component="span"
                         color="primary"
                         startIcon={<PhotoCameraIcon />}
@@ -492,14 +494,14 @@ function App() {
                     </label>
                   </Grid>
                 </Grid>
-                
+
                 {selectedFile && (
                   <Box sx={{ mt: 3 }}>
-                    <Paper 
-                      elevation={1} 
-                      sx={{ 
-                        p: 2, 
-                        mb: 2, 
+                    <Paper
+                      elevation={1}
+                      sx={{
+                        p: 2,
+                        mb: 2,
                         maxWidth: '100%',
                         borderRadius: '8px',
                         backgroundColor: 'rgba(102, 187, 106, 0.1)',
@@ -510,21 +512,21 @@ function App() {
                         Selected: {selectedFile.name}
                       </Typography>
                       {selectedFile && (
-                        <Box sx={{ 
-                          width: '100%', 
-                          display: 'flex', 
+                        <Box sx={{
+                          width: '100%',
+                          display: 'flex',
                           justifyContent: 'center',
-                          mt: 2 
+                          mt: 2
                         }}>
-                          <img 
-                            src={URL.createObjectURL(selectedFile)} 
-                            alt="Bill preview" 
-                            style={{ 
+                          <img
+                            src={URL.createObjectURL(selectedFile)}
+                            alt="Bill preview"
+                            style={{
                               maxWidth: '100%',
                               maxHeight: '200px',
                               borderRadius: '4px',
                               boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
-                            }} 
+                            }}
                           />
                         </Box>
                       )}
@@ -534,10 +536,10 @@ function App() {
               </Box>
             )}
           </DialogContent>
-          
+
           <DialogActions sx={{ p: 3, pt: 0 }}>
-            <Button 
-              onClick={handleCloseDialog} 
+            <Button
+              onClick={handleCloseDialog}
               color="primary"
               variant="outlined"
               sx={{ borderRadius: '8px' }}
@@ -545,7 +547,7 @@ function App() {
             >
               Cancel
             </Button>
-            <Button 
+            <Button
               onClick={currentTab === 0 ? handleAddExpense : handleFileUpload}
               color="primary"
               variant="contained"
@@ -559,15 +561,15 @@ function App() {
         </Dialog>
 
         {/* Snackbar for notifications */}
-        <Snackbar 
-          open={snackbarOpen} 
-          autoHideDuration={6000} 
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
           onClose={handleCloseSnackbar}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
-          <Alert 
-            onClose={handleCloseSnackbar} 
-            severity={snackbarSeverity} 
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={snackbarSeverity}
             variant="filled"
             sx={{ width: '100%' }}
           >

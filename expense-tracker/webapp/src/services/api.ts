@@ -10,6 +10,17 @@ const api = axios.create({
   baseURL: window.configs.apiUrl
 });
 
+// Add response interceptor to handle 401 errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      window.location.href = '/auth/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Define interfaces matching API responses
 export interface BillItem {
   id?: number;
