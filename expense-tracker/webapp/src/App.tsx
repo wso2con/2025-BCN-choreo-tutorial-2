@@ -26,15 +26,19 @@ import {
   createTheme,
   Snackbar,
   Alert,
-  CircularProgress
+  CircularProgress,
+  Menu,
+  MenuItem
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import ImageIcon from '@mui/icons-material/Image';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import './App.css';
 import { billsApi, billParserApi, Bill, BillInput } from './services/api';
+import Cookies from 'js-cookie';
 
 // Define green money theme
 const theme = createTheme({
@@ -87,8 +91,25 @@ function App() {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [userName, setUserName] = useState<string>('');
 
+  const checkUserInfo = () => {
+    const encodedUserInfo = Cookies.get('userinfo');
+    if (encodedUserInfo) {
+      try {
+        const decoded = JSON.parse(atob(encodedUserInfo));
+        setUserInfo(decoded);
+        setUserName(decoded.name || 'Guest');
+      } catch (error) {
+        console.error('Failed to decode userinfo:', error);
+        setUserName('Guest');
+      }
+    } else {
+      setUserName('Guest');
+    }
+  };
 
   // Fetch bills from API
   const fetchBills = async () => {
@@ -107,6 +128,7 @@ function App() {
       }));
 
       setExpenses(transformedExpenses);
+      checkUserInfo(); // Check user info after successful bills fetch
       setError(null);
     } catch (err) {
       console.error('Failed to fetch bills:', err);
@@ -217,6 +239,19 @@ function App() {
     setSnackbarOpen(false);
   };
 
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    window.location.href = "/auth/logout?post_logout_redirect_uri=/";
+    handleMenuClose();
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -261,6 +296,30 @@ function App() {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               Monthly Expense Tracker
             </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Button
+                color="inherit"
+                onClick={handleMenuOpen}
+                endIcon={<ArrowDropDownIcon />}
+              >
+                {userName}
+              </Button>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </Box>
           </Toolbar>
         </AppBar>
 

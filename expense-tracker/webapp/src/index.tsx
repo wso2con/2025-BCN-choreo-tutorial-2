@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+//@ts-ignore
+window.configs = {
+  apiUrl: '/choreo-apis/expense-tracker/bffapi/v1',
+};
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
