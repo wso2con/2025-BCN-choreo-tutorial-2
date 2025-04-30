@@ -14,3 +14,5 @@ dependencies:
     connectionReferences:
     - name: Accounts
       resourceRef: service:/expense-tracking/accounts/v1/5c69c/PROJECT
+    - name: Receipts
+      resourceRef: service:/expense-tracking/receipts/v1/5c69c/PROJECT
